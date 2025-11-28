@@ -19,6 +19,11 @@ on:
           - minor
           - major
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
   version-and-release:
     runs-on: ubuntu-latest
@@ -30,6 +35,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -157,8 +163,8 @@ jobs:
 
       - name: Commit version changes
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git add VERSION pack.mcmeta
           git commit -m "🔖 Bump version to ${{ steps.new_version.outputs.version }} [skip-version]" || exit 0
 
