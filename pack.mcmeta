@@ -2,11 +2,17 @@
   "pack": {
     "description": [
       {
-        "text": "BoP fractured World",
+        "text": "BiomesOPlenty Complete World v1.0.1",
         "color": "#00FF88"
       },
+      "\n",
       {
-        "text": "Made by SmokyDaStona",
+        "text": "Surface & Underground Biomes",
+        "color": "#AAAAAA"
+      },
+      "\n",
+      {
+        "text": "Made by AI Assistant",
         "color": "#ffbbbb"
       }
     ],
