@@ -175,39 +175,6 @@ jobs:
           git push origin main
           git push origin "v$NEW_VERSION"
 
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ steps.new_version.outputs.version }}
-          release_name: BiomesOPlenty Complete World v${{ steps.new_version.outputs.version }}
-          body: |
-            ## BiomesOPlenty Complete World v${{ steps.new_version.outputs.version }}
-            
-            ### Changes
-            - ${{ github.event.head_commit.message }}
-            
-            ### Installation
-            1. Download the datapack zip file
-            2. Place in your world's `datapacks/` folder
-            3. Run `/reload` in-game
-            
-            ### Minecraft Compatibility
-            - Base: 1.20.1+ (pack_format 15)
-            - 1.20.5+ supported via overlays
-            - 1.21.4+ (Pale Garden features)
-            - 1.21.5+ (Leaf litter features) 
-            - 1.21.9+ (Latest terrain generation)
-            
-            ### Features
-            - BiomesOPlenty surface biomes integration
-            - Better Cave Worlds underground terrain
-            - Custom underground cave biome structures
-            - Jigsaw-based structure generation
-          draft: false
-          prerelease: false
-
       - name: Create release archive
         run: |
           # Create a clean copy for distribution
@@ -217,12 +184,35 @@ jobs:
           zip -r "../BiomesOPlenty-Complete-World-v${{ steps.new_version.outputs.version }}.zip" .
           cd ..
 
-      - name: Upload release asset
-        uses: actions/upload-release-asset@v1
+      - name: Create GitHub Release with asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./BiomesOPlenty-Complete-World-v${{ steps.new_version.outputs.version }}.zip
-          asset_name: BiomesOPlenty-Complete-World-v${{ steps.new_version.outputs.version }}.zip
-          asset_content_type: application/zip
+        run: |
+          NEW_VERSION="${{ steps.new_version.outputs.version }}"
+          
+          # Create release with GitHub CLI
+          gh release create "v$NEW_VERSION" \
+            --title "BiomesOPlenty Complete World v$NEW_VERSION" \
+            --notes "## BiomesOPlenty Complete World v$NEW_VERSION
+
+          ### Changes
+          - ${{ github.event.head_commit.message }}
+
+          ### Installation
+          1. Download the datapack zip file
+          2. Place in your world's \`datapacks/\` folder
+          3. Run \`/reload\` in-game
+
+          ### Minecraft Compatibility
+          - Base: 1.20.1+ (pack_format 15)
+          - 1.20.5+ supported via overlays
+          - 1.21.4+ (Pale Garden features)
+          - 1.21.5+ (Leaf litter features) 
+          - 1.21.9+ (Latest terrain generation)
+
+          ### Features
+          - BiomesOPlenty surface biomes integration
+          - Better Cave Worlds underground terrain
+          - Custom underground cave biome structures
+          - Jigsaw-based structure generation" \
+            "BiomesOPlenty-Complete-World-v$NEW_VERSION.zip"
