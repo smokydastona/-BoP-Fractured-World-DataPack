@@ -7,12 +7,12 @@
   ],
   "placement": {
     "type": "minecraft:random_spread",
-    "salt": 0,
+    "salt": 95472863,
     "exclusion_zone": {
       "other_set": "biomesoplenty_complete:cave_blocker",
       "chunk_count": 5
     },
-    "spacing": 1,
-    "separation": 0
+    "spacing": 30,
+    "separation": 8
   }
 }
